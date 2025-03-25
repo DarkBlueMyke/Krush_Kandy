@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cierre de Caja</title>
+    <link rel="stylesheet" href="./cierre_caja.css">
+</head>
+<body>
+    <!-- Menú lateral de funciones -->
+    <div class="sidebar">
+        <a href="./Consultas.html"><button class="footer-button">Consultas</button></a>
+        <a href="./Cierre caja.html"><button class="footer-button">Cierre de caja</button></a>  
+    </div>
+
+    <!-- Contenido principal -->
+    <div class="content">
+        <div class="header">Cierre de Caja</div>
+        
+        <h2>Resumen de Ventas</h2>
+        
+        <table>
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Total</th>
+                </tr>
+            </thead>
+            <tbody id="ventas-body">
+                <!-- Las filas se llenarán dinámicamente con JS -->
+            </tbody>
+        </table>
+        
+        <div class="summary">
+            <p><strong>Total de Ventas:</strong> <span id="total-ventas">$0.00</span></p>
+        </div>
+        
+        <div class="footer">
+            <button class="footer-button" onclick="imprimirCierre()">Imprimir Cierre</button>
+            <div><br></div>
+            <a href="./menu.html"><button class="footer-button">Atrás</button></a>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const ventas = [
+                { nombre: "Producto A", cantidad: 3, precio: 50.00 },
+                { nombre: "Producto B", cantidad: 2, precio: 30.00 },
+                { nombre: "Producto C", cantidad: 1, precio: 20.00 }
+            ];
+            
+            let totalVentas = 0;
+            const tbody = document.getElementById("ventas-body");
+            
+            ventas.forEach((venta) => {
+                const total = venta.cantidad * venta.precio;
+                totalVentas += total;
+                
+                const row = `<tr>
+                    <td>${venta.nombre}</td>
+                    <td>${venta.cantidad}</td>
+                    <td>$${venta.precio.toFixed(2)}</td>
+                    <td>$${total.toFixed(2)}</td>
+                </tr>`;
+                tbody.innerHTML += row;
+            });
+            
+            document.getElementById("total-ventas").textContent = `$${totalVentas.toFixed(2)}`;
+        });
+
+        function imprimirCierre() {
+            window.print();
+        }
+    </script>
+</body>
+</html>

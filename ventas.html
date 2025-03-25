@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Punto de Venta</title>
+    <link rel="stylesheet" href="./ventas.css">
+    <style>
+        .discount-section button {
+            margin-right: 10px; /* Espacio entre botones */
+        }
+
+        .discount-section {
+            margin-bottom: 20px; /* Espacio en la parte inferior de la sección */
+        }
+    </style>
+</head>
+<body>
+    <!-- Menú lateral de funciones -->
+    <div class="sidebar">
+        <a href="./Consultas.html"><button class="footer-button">Consultas</button></a>
+        <div><br></div>
+        <a href="./Cierre caja.html"><button class="footer-button">Cierre de caja</button></a>  
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <span>Artículos</span>
+        </div>
+
+        <div class="order-section">
+            <label for="orden">Orden #:</label>
+            <input type="text" id="orden" name="orden" readonly>
+        </div>
+
+        <div class="sku-section">
+            <label for="sku">SKU:</label>
+            <input type="text" id="sku" name="sku">
+            
+            <label for="cantidad">Cantidad:</label>
+            <input type="number" id="cantidad" name="cantidad" min="1" value="1">
+
+            <button onclick="terminarOrden()">R</button>
+        </div>
+
+        <div class="table-container">
+            <table id="productos">
+                <tr>
+                    <th>#</th>
+                    <th>SKU</th>
+                    <th>Descripción</th>
+                    <th>Cantidad</th>
+                    <th>Precio</th>
+                </tr>
+            </table>
+        </div>
+
+        <div class="summary">
+            <p><strong>Subtotal:</strong> <span id="subtotal">$0.00</span></p>
+            <p><strong>Descuento:</strong> <span id="descuento">$0.00</span></p>
+            <p><strong>Total:</strong> <span id="total">$0.00</span></p>
+        </div>
+
+        <div class="discount-section" id="menu">
+            <label for="discount">Descuento (%):</label>
+            <input type="number" id="discount" min="0" max="100" value="0">
+            <button onclick="aplicarDescuento()">Aplicar Descuento</button>
+            <div>
+                <br>
+                <button onclick="location.href='menu.html'">Regresar al Menú</button>
+            </div>
+        </div>
+
+        <div class="big-buttons">
+            <button onclick="realizarVenta()">T</button>
+        </div>
+    </div>
+
+    <script>
+        function irAlMenu() {
+            document.getElementById('menu').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function aplicarDescuento() {
+            const descuento = document.getElementById('discount').value;
+            const subtotal = parseFloat(document.getElementById('subtotal').textContent.replace('$', ''));
+            const descuentoAplicado = (subtotal * descuento) / 100;
+            const total = subtotal - descuentoAplicado;
+
+            document.getElementById('descuento').textContent = `$${descuentoAplicado.toFixed(2)}`;
+            document.getElementById('total').textContent = `$${total.toFixed(2)}`;
+        }
+
+        function terminarOrden() {
+            alert("Orden terminada");
+        }
+
+        function realizarVenta() {
+            alert("Venta realizada");
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Registro de Productos</title>
+    <style>
+        body {
+            background-image: url("./Fondo/Banner_KR_K.jpg");
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+
+        .container {
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: auto;
+            width: 600px;
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid #000;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        input, button {
+            display: block;
+            margin-bottom: 15px;
+            padding: 10px;
+            width: calc(100% - 22px);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #ff0077;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color:#ff0077;
+        }
+
+        .producto-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+
+        .botones {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        /* Barra lateral */
+        .sidebar {
+            text-align: center;
+            position: fixed;
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            padding-top: 150px;
+            justify-items: center;
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0);
+            backdrop-filter: blur(10px); 
+            border: 1px solid #000; 
+        }
+    </style>
+</head>
+<body>
+<!-- Menú lateral de funciones -->
+<div class="sidebar">
+    <a href="./Consultas.html"><button class="footer-button">Consultas</button></a>
+    <a href="./Cierre caja.html"><button class="footer-button">Cierre de caja</button></a>  
+</div>
+<div class="container">
+    <h2>Registrar Producto</h2>
+    <form id="formProducto">
+        <input type="text" id="proveedorNombre" placeholder="Nombre del Proveedor" required />
+        <input type="text" id="proveedorId" placeholder="ID del Proveedor" required />
+        <input type="text" id="productoNombre" placeholder="Nombre del Producto" required />
+        <input type="text" id="productoId" placeholder="ID del Producto" required />
+        <input type="number" id="cantidad" placeholder="Cantidad" required />
+        <input type="number" step="0.01" id="precio" placeholder="Precio" required />
+        <button type="submit">Guardar Producto</button>
+    </form>
+
+    <h2>Lista de Productos</h2>
+    <div id="listaProductos">
+        <!-- Aquí aparecerán los productos registrados -->
+    </div>
+    
+    <button onclick="location.href='inventario.html'">Regresar a Inventario</button>
+</div>
+
+<script>
+    let idCounter = 1;
+
+    function guardarProducto(proveedorNombre, proveedorId, productoNombre, productoId, cantidad, precio) {
+        const productoDiv = document.createElement('div');
+        productoDiv.classList.add('producto-item');
+        productoDiv.setAttribute('id', 'producto-' + idCounter);
+
+        productoDiv.innerHTML = `
+            <strong>ID Producto:</strong> ${productoId} <br>
+            <strong>Nombre Producto:</strong> ${productoNombre} <br>
+            <strong>ID Proveedor:</strong> ${proveedorId} <br>
+            <strong>Nombre Proveedor:</strong> ${proveedorNombre} <br>
+            <strong>Cantidad:</strong> <span id="cantidad-${idCounter}">${cantidad}</span> <br>
+            <strong>Precio:</strong> $<span id="precio-${idCounter}">${precio}</span> <br>
+            <div class="botones">
+                <button onclick="editarProducto(${idCounter})">Editar</button>
+                <button onclick="eliminarProducto(${idCounter})">Eliminar</button>
+            </div>
+        `;
+
+        document.getElementById('listaProductos').appendChild(productoDiv);
+        idCounter++;
+    }
+
+    function eliminarProducto(productoId) {
+        const productoDiv = document.getElementById('producto-' + productoId);
+        if (productoDiv) productoDiv.remove();
+    }
+
+    function editarProducto(productoId) {
+        const nuevaCantidad = prompt("Ingrese la nueva cantidad:", document.getElementById(`cantidad-${productoId}`).textContent);
+        const nuevoPrecio = prompt("Ingrese el nuevo precio:", document.getElementById(`precio-${productoId}`).textContent);
+        
+        if (nuevaCantidad !== null) {
+            document.getElementById(`cantidad-${productoId}`).textContent = nuevaCantidad;
+        }
+        
+        if (nuevoPrecio !== null) {
+            document.getElementById(`precio-${productoId}`).textContent = nuevoPrecio;
+        }
+    }
+
+    document.getElementById('formProducto').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const proveedorNombre = document.getElementById('proveedorNombre').value;
+        const proveedorId = document.getElementById('proveedorId').value;
+        const productoNombre = document.getElementById('productoNombre').value;
+        const productoId = document.getElementById('productoId').value;
+        const cantidad = document.getElementById('cantidad').value;
+        const precio = document.getElementById('precio').value;
+
+        if (proveedorNombre && proveedorId && productoNombre && productoId && cantidad && precio) {
+            guardarProducto(proveedorNombre, proveedorId, productoNombre, productoId, cantidad, precio);
+            document.getElementById('formProducto').reset();
+        } else {
+            alert("Por favor, completa todos los campos.");
+        }
+    });
+</script>
+
+</body>
+</html>

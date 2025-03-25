@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inicio de Sesion</title>
+    <link rel="stylesheet" href="./Inicio de sesion.css">
+    
+</head>
+<body>
+
+    <div class="container">
+        <!-- Cabecera -->
+        <div class="header">Krush Kandy</div>
+        
+        <!-- Formulario de inicio de sesión -->
+        <div class="login-box">
+            <h2><strong>¡Hola! Ten un excelente día </strong></h2>
+            <input type="text" placeholder="No. de empleado">
+            <input type="password" placeholder="Clave">
+            <a href="./menu.html"><button>Iniciar sesión</button></a>
+        </div>
+        
+        <!-- Pie de página -->
+        <div class="footer">
+            <strong>El éxito es la suma de pequeños esfuerzos, repetidos día tras día</strong>
+        </div>
+    </div>
+    <div id="fecha_hora"></div>
+    <script >
+        function actualizarFechaHora() {
+            const fecha = new Date();
+            const opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const fechaTexto = fecha.toLocaleDateString('es-ES', opcionesFecha);
+            const horaTexto = fecha.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('fecha-hora').innerHTML = `<strong>Fecha y Hora:</strong> ${fechaTexto}, ${horaTexto}`;
+        }
+        setInterval(actualizarFechaHora, 1000);
+        actualizarFechaHora();
+    </script>
+</body>
+</html>

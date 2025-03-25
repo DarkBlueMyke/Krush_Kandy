@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="./menu.css">
+</head>
+<body>
+        <!-- Contenido principal -->
+        <div class="content">
+            <div class="header">Menu</div>
+            <h2>Seleccione una opción</h2>
+            <div class="menu-options">
+                <a href="./ventas.html"><button class="menu-button">Ventas</button></a>
+                <a href="./Factura.html"><button class="menu-button">Facturación</button></a>
+                <a href="./Inventario.html"><button class="menu-button">Inventario</button></a>
+            </div>
+            <!-- Pie de página -->
+        <div class="footer">
+            <a href="./Inicio de sesion.html"><button class="footer-button">Atrás</button></a>
+        </div>
+        </div>
+        
+        
+
+     <!-- Menú lateral de funciones -->
+     <div class="sidebar">
+        <a href="./Consultas.html"><button class="footer-button">Consultas</button></a>
+        <a href="./Cierre caja.html"><button class="footer-button">Cierre de caja</button></a>  
+    </div>
+
+    <script>
+        function actualizarFechaHora() {
+            const fecha = new Date();
+            const opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const fechaTexto = fecha.toLocaleDateString('es-ES', opcionesFecha);
+            const horaTexto = fecha.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('fecha-hora').innerHTML = `<strong>Fecha y Hora:</strong> ${fechaTexto}, ${horaTexto}`;
+        }
+        setInterval(actualizarFechaHora, 1000);
+        actualizarFechaHora();
+    </script>
+
+    
+</body>
+
+</html>

@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu</title>
+    <link rel="stylesheet" href="./Consultas.css">
+</head>
+<body>
+    <!-- Contenido principal -->
+    <div class="content">
+        <div class="header">Consultas</div>
+        <br>
+        
+        <!-- Buscador -->
+        <input type="text" id="buscador" placeholder="Buscar en la tabla..." onkeyup="filtrarTabla()">
+        <br><br>
+        
+        <div class="Tabla">
+            <table id="tabla">
+                <tr>
+                    <th>Proveedor</th>
+                    <th>Proveedor ID</th>
+                    <th>Producto</th>
+                    <th>Producto ID</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                </tr>
+                <tr>
+                    <td>Marcel</td>
+                    <td>46546</td>
+                    <td>Bolitas</td>
+                    <td>5656454</td>
+                    <td>50$</td>
+                    <td>69</td>
+                </tr>
+                <tr>
+                    <td>Marcel</td>
+                    <td>46546</td>
+                    <td>Bolotas</td>
+                    <td>456456</td>
+                    <td>50$</td>
+                    <td>69</td>
+                </tr>
+                <tr>
+                    <td>Miku</td>
+                    <td>65481</td>
+                    <td>Palos</td>
+                    <td>46844</td>
+                    <td>69$</td>
+                    <td>21</td>
+                </tr>
+                <tr>
+                    <td>Miku</td>
+                    <td>65481</td>
+                    <td>Pene</td>
+                    <td>696969</td>
+                    <td>50$</td>
+                    <td>69</td>
+                </tr>
+            </table>
+        </div>
+        
+        <!-- Pie de página -->
+        <div class="footer">
+            <a href="./menu.html"><button class="footer-button">Atrás</button></a>
+        </div>
+    </div>
+    
+    <!-- Menú lateral de funciones -->
+    <div class="sidebar">
+        <a href="./Consultas.html"><button class="footer-button">Consultas</button></a>
+        <a href="./Cierre caja.html"><button class="footer-button">Cierre de caja</button></a>  
+    </div>
+    
+    <script>
+        function filtrarTabla() { <!-- Menú lateral de funciones -->
+            let input = document.getElementById("buscador");
+            let filtro = input.value.toLowerCase();
+            let tabla = document.getElementById("tabla");
+            let filas = tabla.getElementsByTagName("tr");
+            
+            for (let i = 1; i < filas.length; i++) {
+                let celdas = filas[i].getElementsByTagName("td");
+                let coincide = false;
+                
+                for (let j = 0; j < celdas.length; j++) {
+                    if (celdas[j].innerText.toLowerCase().includes(filtro)) {
+                        coincide = true;
+                        break;
+                    }
+                }
+                
+                filas[i].style.display = coincide ? "" : "none";
+            }
+        }
+    </script>   
+</body>
+</html>

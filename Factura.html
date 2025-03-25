@@ -1,0 +1,155 @@
+<!DOCTYPE html> 
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Factura</title>
+    <link rel="stylesheet" href="factura.css">
+    <script>
+        var subtotalP = 0;
+        var iva = 0;
+        var total = 0;
+        var fecha = new Date();
+        
+        function agregarProducto() {
+            let codigoProducto = document.getElementById('codigoProducto').value;
+            if (!codigoProducto) return alert('Ingrese el código del producto');
+            
+            let nombreProducto = prompt('Ingrese Nombre del Producto');
+            if (!nombreProducto) return;
+            
+            let precio = parseFloat(prompt('Ingrese Precio'));
+            if (isNaN(precio) || precio <= 0) return alert('Precio inválido');
+            
+            let cantidad = parseInt(prompt('Ingrese Cantidad'));
+            if (isNaN(cantidad) || cantidad <= 0) return alert('Cantidad inválida');
+            
+            const subtotal = precio * cantidad;
+            subtotalP += subtotal;
+            iva = subtotalP * 0.16;
+            total = subtotalP + iva;
+
+            const tabla = document.querySelector('#detalle tbody');
+            const fila = document.createElement('tr');
+            fila.innerHTML = `
+                <td>${codigoProducto}</td>
+                <td>${nombreProducto}</td>
+                <td>$${precio.toFixed(2)}</td>
+                <td>${cantidad}</td>
+                <td>$${subtotal.toFixed(2)}</td>
+                <td><button onclick="eliminarProducto(this, ${subtotal})">Eliminar ➖</button></td>
+            `;
+            tabla.appendChild(fila);
+            actualizarTotales();
+            document.getElementById('codigoProducto').value = '';
+        }
+
+        function eliminarProducto(btn, monto) {
+            const fila = btn.parentNode.parentNode;
+            fila.parentNode.removeChild(fila);
+            subtotalP -= monto;
+            iva = subtotalP * 0.16;
+            total = subtotalP + iva;
+            actualizarTotales();
+        }
+
+        function actualizarTotales() {
+            document.getElementById('subtotal').textContent = subtotalP.toFixed(2);
+            document.getElementById('iva').textContent = iva.toFixed(2);
+            document.getElementById('total').textContent = total.toFixed(2);
+        }
+
+        function generarFactura() {
+            var idCliente = document.getElementById("idCliente").value;
+            var nombreCliente = document.getElementById("nombreCliente").value;
+            var RFC = document.getElementById("RFC").value;
+            var telefonoCliente = document.getElementById("telefonoCliente").value;
+
+            if (!idCliente || !nombreCliente || !RFC || !telefonoCliente) {
+                alert('Por favor, complete todos los campos.');
+                return;
+            }
+
+            var factura = `
+                <h2>Factura</h2>
+                <p>Fecha: ${fecha.getDate()}/${fecha.getMonth() + 1}/${fecha.getFullYear()}</p>
+                <p>Identificación del Cliente: ${idCliente}</p>
+                <p>Nombre del Cliente: ${nombreCliente}</p>
+                <p>RFC: ${RFC}</p>
+                <p>Teléfono: ${telefonoCliente}</p>
+                <table border="1" cellpadding="5">
+                    <thead>
+                        <tr>
+                            <th>Código</th>
+                            <th>Producto</th>
+                            <th>Precio</th>
+                            <th>Cantidad</th>
+                            <th>Subtotal</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        ${document.querySelector('#detalle tbody').innerHTML}
+                    </tbody>
+                </table>
+                <p><strong>Subtotal: </strong>$${subtotalP.toFixed(2)}</p>
+                <p><strong>IVA (16%): </strong>$${iva.toFixed(2)}</p>
+                <p><strong>Total: </strong>$${total.toFixed(2)}</p>
+                <button onclick="window.print()">Imprimir Factura</button>
+            `;
+
+            var ventana = window.open('', '', 'width=800, height=600');
+            ventana.document.write(factura);
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h2>Factura</h2>
+        <input type="text" id="idCliente" placeholder="ID Cliente" maxlength="8" pattern="\d{8}"required />
+        <input type="text" id="nombreCliente" placeholder="Nombre Cliente" required />
+        <input type="text" id="RFC" placeholder="RFC (13 caracteres)" maxlength="13"  required />
+        <input type="tel" id="telefonoCliente" placeholder="Teléfono (10 dígitos)" maxlength="10" pattern="\d{10}" required />
+
+        <input type="text" id="codigoProducto" placeholder="Código del Producto" maxlength="8" required/>
+        <button onclick="agregarProducto()">Agregar Producto</button>
+        <button onclick="location.href='menu.html'">Regresar al Menú</button>
+
+        <table id="detalle">
+            <thead>
+                <tr>
+                    <th>Código</th>
+                    <th>Producto</th>
+                    <th>Precio</th>
+                    <th>Cantidad</th>
+                    <th>Subtotal</th>
+                    <th>Eliminar</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h3>Subtotal: $<span id="subtotal">0.00</span></h3>
+        <h3>IVA (16%): $<span id="iva">0.00</span></h3>
+        <h3>Total: $<span id="total">0.00</span></h3>
+
+        <button onclick="generarFactura()">Generar Factura</button>
+    </div>
+    <!-- Menú lateral de funciones -->
+    <div class="sidebar">
+        <a href="./Consultas.html"><button class="footer-button">Consultas</button></a>
+        <a href="./Cierre caja.html"><button class="footer-button">Cierre de caja</button></a>  
+    </div>
+
+    <script>
+        function actualizarFechaHora() {
+            const fecha = new Date();
+            const opcionesFecha = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+            const fechaTexto = fecha.toLocaleDateString('es-ES', opcionesFecha);
+            const horaTexto = fecha.toLocaleTimeString('es-ES', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+            document.getElementById('fecha-hora').innerHTML = `<strong>Fecha y Hora:</strong> ${fechaTexto}, ${horaTexto}`;
+        }
+        setInterval(actualizarFechaHora, 1000);
+        actualizarFechaHora();
+    </script>
+</body>
+</html>

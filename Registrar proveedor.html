@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sistema de Proveedores</title>
+    <style>
+        body {
+            background-image: url("./Fondo/Banner_KR_K.jpg");
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 20px;
+        }
+
+        .container {
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            margin: auto;
+            width: 600px;
+            position: relative;
+            background-color: rgba(255, 255, 255, 0.3);
+            backdrop-filter: blur(10px);
+            border: 1px solid #000;
+        }
+
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+
+        input, button {
+            display: block;
+            margin-bottom: 15px;
+            padding: 10px;
+            width: calc(100% - 22px);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #ff0077;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color:#ff0077;
+        }
+
+        .proveedor-item {
+            background-color: #f9f9f9;
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            position: relative;
+        }
+
+        .delete-btn, .edit-btn {
+            background-color: #ff0077;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            cursor: pointer;
+            border-radius: 4px;
+            font-size: 14px;
+            display: block;
+            margin-top: 5px;
+        }
+
+        .delete-btn:hover, .edit-btn:hover {
+            background-color: #d6005f;
+        }
+
+/*botones de Barra lateral*/
+.color{
+            text-align: center;
+            background-color: #f103d2;
+            justify-content:center;
+            height: 12%;
+            border: black;
+            font-size: 25px;
+            border-radius: 1px;
+            width: 100%;
+            align-items: center;
+            display: flex;
+            cursor: pointer;
+            border-radius: 5px;
+           
+        }
+        /*animacion del boton de la barra*/
+        .color:hover {
+            background-color: #b40082;
+        }
+
+        /* Barra lateral */
+        .sidebar {
+            text-align: center;
+            position: fixed;
+            
+            left: 0;
+            top: 0;
+            width: 300px;
+            height: 100%;
+            padding-top: 150px;
+            justify-items: center;
+            display: flex;
+            flex-direction: column;
+            background-color: rgba(255, 255, 255, 0);
+            backdrop-filter: blur(10px); 
+            border: 1px solid #000; 
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- Menú lateral de funciones -->
+<div class="sidebar">
+    <a href="./Consultas.html"><button class="footer-button">Consultas</button></a>
+    <a href="./Cierre caja.html"><button class="footer-button">Cierre de caja</button></a>  
+</div>
+
+<div class="container">
+    <h2>Registrar Proveedor</h2>
+    <form id="formProveedor">
+        <input type="text" id="proveedorNombre" placeholder="Nombre del Proveedor" required />
+        <input type="text" id="proveedorId" placeholder="ID del Proveedor" required />
+        <input type="text" id="proveedorDireccion" placeholder="Dirección del Proveedor" required />
+        <input type="tel" id="proveedorTelefono" placeholder="Número de Teléfono" required />
+        <button type="submit">Guardar Proveedor</button>
+        <button type="button" onclick="location.href='inventario.html'">Regresar a Inventario</button>
+    </form>
+
+    <h2>Lista de Proveedores</h2>
+    <div id="listaProveedores">
+        <!-- Aquí aparecerán los proveedores registrados -->
+    </div>
+</div>
+
+<script>
+    function guardarProveedor(nombre, id, direccion, telefono) {
+        let proveedorDiv = document.getElementById('proveedor-' + id);
+        if (!proveedorDiv) {
+            proveedorDiv = document.createElement('div');
+            proveedorDiv.classList.add('proveedor-item');
+            proveedorDiv.setAttribute('id', 'proveedor-' + id);
+            document.getElementById('listaProveedores').appendChild(proveedorDiv);
+        }
+        
+        proveedorDiv.innerHTML = `
+            <strong>ID:</strong> ${id} <br>
+            <strong>Nombre:</strong> <span class="nombre-proveedor">${nombre}</span> <br>
+            <strong>Dirección:</strong> <span class="direccion-proveedor">${direccion}</span> <br>
+            <strong>Teléfono:</strong> <span class="telefono-proveedor">${telefono}</span> <br>
+            <button class="edit-btn" onclick="editarProveedor(${id}, '${nombre}', '${direccion}', '${telefono}')">Editar</button>
+            <button class="delete-btn" onclick="eliminarProveedor(${id})">Eliminar</button>
+        `;
+    }
+
+    function eliminarProveedor(proveedorId) {
+        const proveedorDiv = document.getElementById('proveedor-' + proveedorId);
+        if (proveedorDiv) proveedorDiv.remove();
+    }
+
+    function editarProveedor(proveedorId, nombre, direccion, telefono) {
+        const nuevoNombre = prompt("Editar Nombre", nombre);
+        const nuevaDireccion = prompt("Editar Dirección", direccion);
+        const nuevoTelefono = prompt("Editar Teléfono", telefono);
+
+        if (nuevoNombre !== null && nuevaDireccion !== null && nuevoTelefono !== null) {
+            // Actualizamos los datos en el HTML
+            document.querySelector(`#proveedor-${proveedorId} .nombre-proveedor`).innerText = nuevoNombre;
+            document.querySelector(`#proveedor-${proveedorId} .direccion-proveedor`).innerText = nuevaDireccion;
+            document.querySelector(`#proveedor-${proveedorId} .telefono-proveedor`).innerText = nuevoTelefono;
+        }
+    }
+
+    document.getElementById('formProveedor').addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const nombre = document.getElementById('proveedorNombre').value;
+        const id = document.getElementById('proveedorId').value;
+        const direccion = document.getElementById('proveedorDireccion').value;
+        const telefono = document.getElementById('proveedorTelefono').value;
+
+        if (nombre && id && direccion && telefono) {
+            guardarProveedor(nombre, id, direccion, telefono);
+            document.getElementById('formProveedor').reset();
+        } else {
+            alert("Por favor, completa todos los campos.");
+        }
+    });
+</script>
+
+</body>
+</html>
